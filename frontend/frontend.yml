@@ -17,7 +17,8 @@ spec:
         - name: clone
           image: alpine/git
           command:
-            - bash -c
+            - bash
+            - -c
           args:
             - |
               git clone https://:${TOKEN}@github.com/nagoya-caravan/frontend /srv \

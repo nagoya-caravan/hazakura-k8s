@@ -1,0 +1,88 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      initContainers:
+        - name: clone
+          image: alpine/git
+          command:
+            - git
+            - clone
+            - https://:${TOKEN}@github.com/nagoya-caravan/frontend
+            - /srv
+            - --sparse
+            - .
+            - -b
+          args:
+            - 5fc5b54
+          env:
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: github-token
+      containers:
+        - name: frontend
+          ports:
+            - containerPort: 8080
+          image: node
+          command:
+            - bash
+            - -c
+          args:
+            - |
+              npm install &&
+              npm run build &&
+              npm run start
+          workingDir: /srv
+          volumeMounts:
+            - mountPath: /srv
+              name: srv
+      volumes:
+        - name: srv
+          emptyDir:
+            { }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      name: "http"
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-ingress
+spec:
+  ingressClassName: haproxy
+  rules:
+    - host: hazakura.kigawa.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 3000

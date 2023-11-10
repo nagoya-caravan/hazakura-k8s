@@ -41,7 +41,8 @@ spec:
             - $(REV)
           env:
             - name: REV
-              value: 4049d4d6a228443644ff1a03efb4ed023f333d25
+              value:
+                - 3353133c90222b0fd60b543665f01f93e54d2da5
           workingDir: /srv/frontend
           volumeMounts:
             - mountPath: /srv
@@ -77,7 +78,7 @@ spec:
               name: srv
       volumes:
         - name: srv
-          emptyDir: { }
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -92,6 +93,13 @@ spec:
       targetPort: 3000
       name: "http"
   type: ClusterIP
+  template:
+    spec:
+      initContainers:
+        - null
+        - env:
+            - value:
+                - 3353133c90222b0fd60b543665f01f93e54d2da5
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -110,3 +118,10 @@ spec:
                 name: frontend
                 port:
                   number: 3000
+  template:
+    spec:
+      initContainers:
+        - null
+        - env:
+            - value:
+                - 3353133c90222b0fd60b543665f01f93e54d2da5

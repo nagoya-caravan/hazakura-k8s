@@ -25,7 +25,7 @@ spec:
             - .
             - -b
           args:
-            - 5fc5b54
+            - "5fc5b54"
           env:
             - name: TOKEN
               valueFrom:

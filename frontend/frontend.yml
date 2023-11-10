@@ -53,7 +53,7 @@ spec:
           args:
             - fetch
             - --depth
-            - "0"
+            - "1"
           workingDir: /srv/frontend
           volumeMounts:
             - mountPath: /srv

@@ -41,8 +41,7 @@ spec:
             - $(REV)
           env:
             - name: REV
-              value:
-                - 3353133c90222b0fd60b543665f01f93e54d2da5
+              value: e731a8ae2e71dab5e41fcfae5e4b59d4f3f6c103
           workingDir: /srv/frontend
           volumeMounts:
             - mountPath: /srv
@@ -98,8 +97,7 @@ spec:
       initContainers:
         - null
         - env:
-            - value:
-                - 3353133c90222b0fd60b543665f01f93e54d2da5
+            - value: e731a8ae2e71dab5e41fcfae5e4b59d4f3f6c103
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -123,5 +121,4 @@ spec:
       initContainers:
         - null
         - env:
-            - value:
-                - 3353133c90222b0fd60b543665f01f93e54d2da5
+            - value: e731a8ae2e71dab5e41fcfae5e4b59d4f3f6c103

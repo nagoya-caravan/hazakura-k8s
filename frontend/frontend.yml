@@ -92,11 +92,6 @@ spec:
       targetPort: 3000
       name: "http"
   type: ClusterIP
-  template:
-    spec:
-      initContainers:
-        - args:
-            - 4049d4d6a228443644ff1a03efb4ed023f333d25
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -115,8 +110,3 @@ spec:
                 name: frontend
                 port:
                   number: 3000
-  template:
-    spec:
-      initContainers:
-        - args:
-            - 4049d4d6a228443644ff1a03efb4ed023f333d25

@@ -9,8 +9,8 @@ spec:
     app: backend
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 5000
+      targetPort: 5000
       name: "http"
   type: ClusterIP
 
@@ -31,4 +31,4 @@ spec:
               service:
                 name: backend
                 port:
-                  number: 3000
+                  number: 5000

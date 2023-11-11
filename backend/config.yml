@@ -7,11 +7,11 @@ metadata:
 data:
   rewrite.conf: |
     [uwsgi]
-      env=TZ=UTC-9  
-      socket=0.0.0.0:3031 
-      wsgi-file=./app.py
-      master=true
-      callable=app
+    env=TZ=UTC-9  
+    http=0.0.0.0:3031 
+    wsgi-file=./app.py
+    master=true
+    callable=app
 
 ---
 apiVersion: v1

@@ -10,7 +10,7 @@ data:
     
       location / {
         add_header uri $uri;
-        index /index.txt;
-        try_files $uri /index.txt;
+        index /index.html;
+        try_files $uri /index.html;
       }
     }

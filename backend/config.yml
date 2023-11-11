@@ -13,6 +13,7 @@ data:
     wsgi-file=./app.py
     master=true
     callable=app
+    module=app
 
 ---
 apiVersion: v1

@@ -10,6 +10,7 @@ data:
       server_name *.kigawa.net;
     
       location / {
+        root /usr/share/nginx/html;
         add_header uri $uri;
         index /index.html;
         try_files $uri /index.html;

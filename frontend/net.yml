@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hazakura
+  name: frontend
 spec:
   selector:
-    app: hazakura
+    app: frontend
   ports:
     - protocol: TCP
       port: 8080
@@ -18,17 +18,17 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hazakura-ingress
+  name: frontend-ingress
 spec:
   ingressClassName: haproxy
   rules:
-    - host: hazakura.kigawa.net
+    - host: hazakura-test.kigawa.net
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: hazakura
+                name: frontend
                 port:
                   number: 8080

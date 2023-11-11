@@ -22,7 +22,7 @@ metadata:
 spec:
   ingressClassName: haproxy
   rules:
-    - host: hazakura-api.kigawa.net
+    - host: hazakura-api-test.kigawa.net
       http:
         paths:
           - path: /

@@ -2,16 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: hazakura
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: hazakura
   template:
     metadata:
       labels:
-        app: frontend
+        app: hazakura
     spec:
       initContainers:
         - name: clone
@@ -74,7 +74,7 @@ spec:
             - mountPath: /srv/frontend/dist
               name: public
       containers:
-        - name: frontend
+        - name: hazakura
           ports:
             - containerPort: 8080
           image: nginx

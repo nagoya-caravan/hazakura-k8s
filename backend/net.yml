@@ -14,19 +14,19 @@ spec:
   type: ClusterIP
 
 ---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: backend-web
-#spec:
-#  selector:
-#    app: backend-web
-#  ports:
-#    - protocol: TCP
-#      port: 8080
-#      targetPort: 8080
-#      name: "http"
-#  type: ClusterIP
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-web
+spec:
+  selector:
+    app: backend-web
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      name: "http"
+  type: ClusterIP
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -43,8 +43,8 @@ spec:
             pathType: Prefix
             backend:
               service:
-#                name: backend-web
-                name: backend
+                name: backend-web
+#                name: backend
                 port:
-                  number: 3031
-#                  number: 8080
+#                  number: 3031
+                  number: 8080

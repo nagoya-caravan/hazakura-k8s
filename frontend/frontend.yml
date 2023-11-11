@@ -90,4 +90,4 @@ spec:
           emptyDir: {}
         - name: config
           configMap:
-            name: nginx-config
+            name: front-nginx-config

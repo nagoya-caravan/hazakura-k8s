@@ -69,9 +69,13 @@ spec:
           args:
             - |
               pip install -r requirements.txt &&
-              python -m flask run
+              pip install --no-cache-dir uwsgi &&
+              uwsgi uwsgi.ini
           workingDir: /srv/backend
           volumeMounts:
+            - mountPath: /srv/backend/uwsgi.ini
+              name: uwsgi
+              subPath: uwsgi.ini
             - mountPath: /srv
               name: srv
           env:
@@ -85,5 +89,8 @@ spec:
                   key: password
                   name: db-pass
       volumes:
+        - name: uwsgi
+          configMap:
+            name: flask-uwsgi
         - name: srv
-          emptyDir: {}
+          emptyDir: { }

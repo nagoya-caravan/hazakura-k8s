@@ -1,0 +1,30 @@
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-uwsgi
+data:
+  rewrite.conf: |
+    [uwsgi]
+    socket=0.0.0.0:3031 
+    wsgi-file=./app.py
+    master=true
+    callable=app
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: back-nginx-config
+data:
+  uwsgi.conf: |
+    server {
+      listen 8080;
+      server_name *.kigawa.net;
+    
+      location / {
+        include uwsgi_params;
+        uwsgi_pass backend.hazakura.svc.cluster.local:3031;
+      }
+    }

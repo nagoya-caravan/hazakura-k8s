@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      initContainers:
+        - name: clone
+          image: alpine/git
+          command:
+            - git
+          args:
+            - clone
+            - --filter=blob:none
+            - https://:$(TOKEN)@github.com/nagoya-caravan/backend
+            - /srv/backend
+          env:
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: github-token
+          volumeMounts:
+            - mountPath: /srv
+              name: srv
+        - name: checkout
+          image: alpine/git
+          command:
+            - git
+          args:
+            - checkout
+            - $(REV)
+          env:
+            - name: REV
+              value: e731a8ae2e71dab5e41fcfae5e4b59d4f3f6c103
+          workingDir: /srv/backend
+          volumeMounts:
+            - mountPath: /srv
+              name: srv
+        - name: depth
+          image: alpine/git
+          command:
+            - git
+          args:
+            - fetch
+            - --depth
+            - "1"
+          workingDir: /srv/backend
+          volumeMounts:
+            - mountPath: /srv
+              name: srv
+      containers:
+        - name: backend
+          ports:
+            - containerPort: 5000
+          image: python
+          command:
+            - bash
+            - -c
+          args:
+            - |
+              pip install -r requirements.txt &&
+              python -m flask run
+          workingDir: /srv/backend
+          volumeMounts:
+            - mountPath: /srv
+              name: srv
+      volumes:
+        - name: srv
+          emptyDir: {}

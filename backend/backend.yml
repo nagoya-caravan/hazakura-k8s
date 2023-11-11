@@ -61,7 +61,7 @@ spec:
       containers:
         - name: backend
           ports:
-            - containerPort: 5000
+            - containerPort: 3031
           image: python
           command:
             - bash

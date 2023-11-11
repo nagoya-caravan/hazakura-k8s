@@ -45,4 +45,4 @@ spec:
               service:
                 name: backend-web
                 port:
-                  number: 5000
+                  number: 8080

@@ -5,9 +5,13 @@ metadata:
   name: nginx-config
 data:
   rewrite.conf: |
-    location / {
-      add_header uri $uri;
-      index /index.txt;
-      try_files $uri /index.txt;
+    server {
+      listen 80;
+    
+      location / {
+        add_header uri $uri;
+        index /index.txt;
+        try_files $uri /index.txt;
+      }
     }
 immutable: true

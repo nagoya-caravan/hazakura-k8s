@@ -9,8 +9,8 @@ spec:
     app: frontend
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 80
+      targetPort: 80
       name: "http"
   type: ClusterIP
 
@@ -31,4 +31,4 @@ spec:
               service:
                 name: frontend
                 port:
-                  number: 3000
+                  number: 80

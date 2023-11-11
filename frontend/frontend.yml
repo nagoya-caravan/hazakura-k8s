@@ -58,10 +58,7 @@ spec:
           volumeMounts:
             - mountPath: /srv
               name: srv
-      containers:
-        - name: frontend
-          ports:
-            - containerPort: 8080
+        - name: build
           image: node
           command:
             - bash
@@ -69,12 +66,29 @@ spec:
           args:
             - |
               npm install &&
-              npm run build &&
-              npm run start
+              npm run build
           workingDir: /srv/frontend
           volumeMounts:
             - mountPath: /srv
               name: srv
+            - mountPath: /srv/frontend/dist
+              name: public
+      containers:
+        - name: frontend
+          ports:
+            - containerPort: 80
+          image: nginx
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d/
+              name: config
+            - mountPath: /usr/share/nginx/html
+              name: public
       volumes:
+        - name: public
+          emptyDir:
+            { }
         - name: srv
-          emptyDir: {}
+          emptyDir: { }
+        - name: config
+          configMap:
+            name: nginx-config

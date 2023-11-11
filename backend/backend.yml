@@ -41,7 +41,7 @@ spec:
             - $(REV)
           env:
             - name: REV
-              value: af8d915e819273c623edbc2200916093dbaa08ca
+              value: 62cab7ec462d9f7388e4700d390ff9c7bec18b71
           workingDir: /srv/backend
           volumeMounts:
             - mountPath: /srv
@@ -93,4 +93,4 @@ spec:
           configMap:
             name: flask-uwsgi
         - name: srv
-          emptyDir: { }
+          emptyDir: {}

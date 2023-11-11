@@ -41,7 +41,7 @@ spec:
             - $(REV)
           env:
             - name: REV
-              value: e731a8ae2e71dab5e41fcfae5e4b59d4f3f6c103
+              value: aa3a00e62c3cccdccaa74777a1205d3fac8e1f7b
           workingDir: /srv/frontend
           volumeMounts:
             - mountPath: /srv
@@ -85,10 +85,9 @@ spec:
               name: public
       volumes:
         - name: public
-          emptyDir:
-            { }
+          emptyDir: {}
         - name: srv
-          emptyDir: { }
+          emptyDir: {}
         - name: config
           configMap:
             name: nginx-config

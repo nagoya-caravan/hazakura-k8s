@@ -77,6 +77,8 @@ spec:
           env:
             - name: DB_USER
               value: root
+            - name: DB_HOST
+              value: mariadb.hazakura.svc.cluster.local
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:

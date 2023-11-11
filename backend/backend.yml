@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
         - name: clone
-          image: alpine/git
+          image: alpine/git:2.40.1
           command:
             - git
           args:
@@ -33,7 +33,7 @@ spec:
             - mountPath: /srv
               name: srv
         - name: checkout
-          image: alpine/git
+          image: alpine/git:2.40.1
           command:
             - git
           args:
@@ -47,7 +47,7 @@ spec:
             - mountPath: /srv
               name: srv
         - name: depth
-          image: alpine/git
+          image: alpine/git:2.40.1
           command:
             - git
           args:
@@ -62,7 +62,7 @@ spec:
         - name: backend
           ports:
             - containerPort: 3031
-          image: python
+          image: python:3.9.18
           command:
             - bash
             - -c

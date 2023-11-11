@@ -65,7 +65,7 @@ spec:
         - name: backend
           ports:
             - containerPort: 3031
-          image: python:3.9.18
+          image: python:3.9
           imagePullPolicy: IfNotPresent
           command:
             - bash

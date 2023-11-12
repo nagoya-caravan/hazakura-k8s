@@ -43,7 +43,7 @@ spec:
             - $(REV)
           env:
             - name: REV
-              value: 2a5c4d4e90f31243ace4060b5d02e71fe8797dcf
+              value: 467c3b4a6abf085267646eda93f1999d12b9accb
           workingDir: /srv/backend
           volumeMounts:
             - mountPath: /srv

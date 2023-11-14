@@ -41,7 +41,7 @@ spec:
             - $(REV)
           env:
             - name: REV
-              value: 0deff5e9d651a589af82b1212c9e9f1c80f7c517
+              value: bbf0d02d06944b019a901f2d2a2275a8b65fa4fd
           workingDir: /srv/frontend
           volumeMounts:
             - mountPath: /srv

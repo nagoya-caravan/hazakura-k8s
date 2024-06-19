@@ -63,6 +63,9 @@ spec:
               name: srv
       containers:
         - name: backend
+          resources:
+            limits:
+              memory: 0.5Gi
           ports:
             - containerPort: 3031
           image: python:latest

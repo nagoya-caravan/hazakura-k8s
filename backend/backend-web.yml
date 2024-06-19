@@ -15,6 +15,9 @@ spec:
     spec:
       containers:
         - name: backend-web
+          resources:
+            limits:
+              memory: 0.5Gi
           ports:
             - containerPort: 8080
           image: nginx

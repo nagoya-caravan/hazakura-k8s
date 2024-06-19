@@ -75,6 +75,9 @@ spec:
               name: public
       containers:
         - name: frontend
+          resources:
+            limits:
+              memory: 0.5Gi
           ports:
             - containerPort: 8080
           image: nginx

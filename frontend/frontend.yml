@@ -1,96 +1,96 @@
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: frontend
-  template:
-    metadata:
-      labels:
-        app: frontend
-    spec:
-      initContainers:
-        - name: clone
-          image: alpine/git
-          command:
-            - git
-          args:
-            - clone
-            - --filter=blob:none
-            - https://:$(TOKEN)@github.com/nagoya-caravan/frontend
-            - /srv/frontend
-          env:
-            - name: TOKEN
-              valueFrom:
-                secretKeyRef:
-                  key: token
-                  name: github-token
-          volumeMounts:
-            - mountPath: /srv
-              name: srv
-        - name: checkout
-          image: alpine/git
-          command:
-            - git
-          args:
-            - checkout
-            - $(REV)
-          env:
-            - name: REV
-              value: 6a73322089d1806e4515ac8d2b9e103098d6ce67
-          workingDir: /srv/frontend
-          volumeMounts:
-            - mountPath: /srv
-              name: srv
-        - name: depth
-          image: alpine/git
-          command:
-            - git
-          args:
-            - fetch
-            - --depth
-            - "1"
-          workingDir: /srv/frontend
-          volumeMounts:
-            - mountPath: /srv
-              name: srv
-        - name: build
-          image: node
-          command:
-            - bash
-            - -c
-          args:
-            - |
-              npm install &&
-              npm run build
-          workingDir: /srv/frontend
-          volumeMounts:
-            - mountPath: /srv
-              name: srv
-            - mountPath: /srv/frontend/dist
-              name: public
-      containers:
-        - name: frontend
-          resources:
-            limits:
-              memory: 0.5Gi
-          ports:
-            - containerPort: 8080
-          image: nginx
-          volumeMounts:
-            - mountPath: /etc/nginx/conf.d/
-              name: config
-            - mountPath: /usr/share/nginx/html
-              name: public
-      volumes:
-        - name: public
-          emptyDir: {}
-        - name: srv
-          emptyDir: {}
-        - name: config
-          configMap:
-            name: front-nginx-config
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: frontend
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: frontend
+#  template:
+#    metadata:
+#      labels:
+#        app: frontend
+#    spec:
+#      initContainers:
+#        - name: clone
+#          image: alpine/git
+#          command:
+#            - git
+#          args:
+#            - clone
+#            - --filter=blob:none
+#            - https://:$(TOKEN)@github.com/nagoya-caravan/frontend
+#            - /srv/frontend
+#          env:
+#            - name: TOKEN
+#              valueFrom:
+#                secretKeyRef:
+#                  key: token
+#                  name: github-token
+#          volumeMounts:
+#            - mountPath: /srv
+#              name: srv
+#        - name: checkout
+#          image: alpine/git
+#          command:
+#            - git
+#          args:
+#            - checkout
+#            - $(REV)
+#          env:
+#            - name: REV
+#              value: 6a73322089d1806e4515ac8d2b9e103098d6ce67
+#          workingDir: /srv/frontend
+#          volumeMounts:
+#            - mountPath: /srv
+#              name: srv
+#        - name: depth
+#          image: alpine/git
+#          command:
+#            - git
+#          args:
+#            - fetch
+#            - --depth
+#            - "1"
+#          workingDir: /srv/frontend
+#          volumeMounts:
+#            - mountPath: /srv
+#              name: srv
+#        - name: build
+#          image: node
+#          command:
+#            - bash
+#            - -c
+#          args:
+#            - |
+#              npm install &&
+#              npm run build
+#          workingDir: /srv/frontend
+#          volumeMounts:
+#            - mountPath: /srv
+#              name: srv
+#            - mountPath: /srv/frontend/dist
+#              name: public
+#      containers:
+#        - name: frontend
+#          resources:
+#            limits:
+#              memory: 0.5Gi
+#          ports:
+#            - containerPort: 8080
+#          image: nginx
+#          volumeMounts:
+#            - mountPath: /etc/nginx/conf.d/
+#              name: config
+#            - mountPath: /usr/share/nginx/html
+#              name: public
+#      volumes:
+#        - name: public
+#          emptyDir: {}
+#        - name: srv
+#          emptyDir: {}
+#        - name: config
+#          configMap:
+#            name: front-nginx-config

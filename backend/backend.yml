@@ -1,103 +1,103 @@
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: backend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: backend
-  template:
-    metadata:
-      labels:
-        app: backend
-    spec:
-      initContainers:
-        - name: clone
-          image: alpine/git:2.40.1
-          imagePullPolicy: IfNotPresent
-          command:
-            - git
-          args:
-            - clone
-            - --filter=blob:none
-            - https://:$(TOKEN)@github.com/nagoya-caravan/backend
-            - /srv/backend
-          env:
-            - name: TOKEN
-              valueFrom:
-                secretKeyRef:
-                  key: token
-                  name: github-token
-          volumeMounts:
-            - mountPath: /srv
-              name: srv
-        - name: checkout
-          image: alpine/git:2.40.1
-          imagePullPolicy: IfNotPresent
-          command:
-            - git
-          args:
-            - checkout
-            - $(REV)
-          env:
-            - name: REV
-              value: 3114b8a97b5f80820ea7ba943c1b454988825bf4
-          workingDir: /srv/backend
-          volumeMounts:
-            - mountPath: /srv
-              name: srv
-        - name: depth
-          image: alpine/git:2.40.1
-          imagePullPolicy: IfNotPresent
-          command:
-            - git
-          args:
-            - fetch
-            - --depth
-            - "1"
-          workingDir: /srv/backend
-          volumeMounts:
-            - mountPath: /srv
-              name: srv
-      containers:
-        - name: backend
-          resources:
-            limits:
-              memory: 0.5Gi
-          ports:
-            - containerPort: 3031
-          image: python:latest
-          imagePullPolicy: IfNotPresent
-          command:
-            - bash
-            - -c
-          args:
-            - |
-              pip install -r requirements.txt &&
-              pip install --no-cache-dir uwsgi &&
-              uwsgi uwsgi.ini
-          workingDir: /srv/backend
-          volumeMounts:
-            - mountPath: /srv/backend/uwsgi.ini
-              name: uwsgi
-              subPath: uwsgi.ini
-            - mountPath: /srv
-              name: srv
-          env:
-            - name: DB_USER
-              value: root
-            - name: DB_HOST
-              value: mariadb.hazakura.svc.cluster.local
-            - name: DB_PASS
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: db-pass
-      volumes:
-        - name: uwsgi
-          configMap:
-            name: flask-uwsgi
-        - name: srv
-          emptyDir: {}
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: backend
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: backend
+#  template:
+#    metadata:
+#      labels:
+#        app: backend
+#    spec:
+#      initContainers:
+#        - name: clone
+#          image: alpine/git:2.40.1
+#          imagePullPolicy: IfNotPresent
+#          command:
+#            - git
+#          args:
+#            - clone
+#            - --filter=blob:none
+#            - https://:$(TOKEN)@github.com/nagoya-caravan/backend
+#            - /srv/backend
+#          env:
+#            - name: TOKEN
+#              valueFrom:
+#                secretKeyRef:
+#                  key: token
+#                  name: github-token
+#          volumeMounts:
+#            - mountPath: /srv
+#              name: srv
+#        - name: checkout
+#          image: alpine/git:2.40.1
+#          imagePullPolicy: IfNotPresent
+#          command:
+#            - git
+#          args:
+#            - checkout
+#            - $(REV)
+#          env:
+#            - name: REV
+#              value: 3114b8a97b5f80820ea7ba943c1b454988825bf4
+#          workingDir: /srv/backend
+#          volumeMounts:
+#            - mountPath: /srv
+#              name: srv
+#        - name: depth
+#          image: alpine/git:2.40.1
+#          imagePullPolicy: IfNotPresent
+#          command:
+#            - git
+#          args:
+#            - fetch
+#            - --depth
+#            - "1"
+#          workingDir: /srv/backend
+#          volumeMounts:
+#            - mountPath: /srv
+#              name: srv
+#      containers:
+#        - name: backend
+#          resources:
+#            limits:
+#              memory: 0.5Gi
+#          ports:
+#            - containerPort: 3031
+#          image: python:latest
+#          imagePullPolicy: IfNotPresent
+#          command:
+#            - bash
+#            - -c
+#          args:
+#            - |
+#              pip install -r requirements.txt &&
+#              pip install --no-cache-dir uwsgi &&
+#              uwsgi uwsgi.ini
+#          workingDir: /srv/backend
+#          volumeMounts:
+#            - mountPath: /srv/backend/uwsgi.ini
+#              name: uwsgi
+#              subPath: uwsgi.ini
+#            - mountPath: /srv
+#              name: srv
+#          env:
+#            - name: DB_USER
+#              value: root
+#            - name: DB_HOST
+#              value: mariadb.hazakura.svc.cluster.local
+#            - name: DB_PASS
+#              valueFrom:
+#                secretKeyRef:
+#                  key: password
+#                  name: db-pass
+#      volumes:
+#        - name: uwsgi
+#          configMap:
+#            name: flask-uwsgi
+#        - name: srv
+#          emptyDir: {}

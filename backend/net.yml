@@ -29,22 +29,22 @@ spec:
   type: ClusterIP
 
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: backend-ingress
-spec:
-  ingressClassName: haproxy
-  rules:
-    - host: hazakura-api-test.kigawa.net
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: backend-web
-#                name: backend
-                port:
-#                  number: 3031
-                  number: 8080
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: backend-ingress
+#spec:
+#  ingressClassName: haproxy
+#  rules:
+#    - host: hazakura-api-test.kigawa.net
+#      http:
+#        paths:
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: backend-web
+##                name: backend
+#                port:
+##                  number: 3031
+#                  number: 8080

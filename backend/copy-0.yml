@@ -48,39 +48,39 @@ spec:
 #          persistentVolumeClaim:
 #            claimName: copy-0
 ---
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: copy-0-restore
-spec:
-  template:
-    metadata:
-      name: copy-0-restore
-    spec:
-      containers:
-        - name: copy-0-restore
-          image: ubuntu
-          command:
-            - bash
-            - -c
-          args:
-            - |
-              apt update
-              apt install rsync -y
-              rsync -avc --delete /temp/ /src
-          volumeMounts:
-            - mountPath: /src
-              name: src
-            - mountPath: /temp
-              name: copy-0
-          resources:
-            limits:
-              memory: 1Gi
-      restartPolicy: OnFailure
-      volumes:
-        - name: src
-          persistentVolumeClaim:
-            claimName: db-data
-        - name: copy-0
-          persistentVolumeClaim:
-            claimName: copy-0
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: copy-0-restore
+#spec:
+#  template:
+#    metadata:
+#      name: copy-0-restore
+#    spec:
+#      containers:
+#        - name: copy-0-restore
+#          image: ubuntu
+#          command:
+#            - bash
+#            - -c
+#          args:
+#            - |
+#              apt update
+#              apt install rsync -y
+#              rsync -avc --delete /temp/ /src
+#          volumeMounts:
+#            - mountPath: /src
+#              name: src
+#            - mountPath: /temp
+#              name: copy-0
+#          resources:
+#            limits:
+#              memory: 1Gi
+#      restartPolicy: OnFailure
+#      volumes:
+#        - name: src
+#          persistentVolumeClaim:
+#            claimName: db-data
+#        - name: copy-0
+#          persistentVolumeClaim:
+#            claimName: copy-0

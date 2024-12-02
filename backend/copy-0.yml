@@ -1,0 +1,86 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: copy-0
+spec:
+  storageClassName: "rook-ceph-rbd"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 32Gi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: copy-0-back
+spec:
+  template:
+    metadata:
+      name: copy-0-back
+    spec:
+      containers:
+        - name: copy-0-back
+          image: ubuntu
+          command:
+            - bash
+            - -c
+          args:
+            - |
+              apt update
+              apt install rsync -y
+              rsync -avc --delete /src/ /temp
+          volumeMounts:
+            - mountPath: /src
+              name: src
+            - mountPath: /temp
+              name: copy-0
+          resources:
+            limits:
+              memory: 1Gi
+      restartPolicy: OnFailure
+      volumes:
+        - name: src
+          persistentVolumeClaim:
+            claimName: db-data
+        - name: copy-0
+          persistentVolumeClaim:
+            claimName: copy-0
+---
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: copy-0-restore
+#spec:
+#  template:
+#    metadata:
+#      name: copy-0-restore
+#    spec:
+#      containers:
+#        - name: copy-0-restore
+#          image: ubuntu
+#          command:
+#            - bash
+#            - -c
+#          args:
+#            - |
+#              apt update
+#              apt install rsync -y
+#              rsync -avc --delete /temp/ /src
+#          volumeMounts:
+#            - mountPath: /src
+#              name: src
+#            - mountPath: /temp
+#              name: copy-0
+#          resources:
+#            limits:
+#              memory: 1Gi
+#      restartPolicy: OnFailure
+#      volumes:
+#        - name: src
+#          persistentVolumeClaim:
+#            claimName: db-data
+#        - name: copy-0
+#          persistentVolumeClaim:
+#            claimName: copy-0

@@ -5,7 +5,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: db-data
 spec:
-  storageClassName: ceph-rbd
+  storageClassName: rook-ceph-rbd
   accessModes:
     - ReadWriteOnce
   resources:
